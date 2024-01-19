@@ -1,0 +1,32 @@
+function myFunction() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var range = sheet.getActiveRange();
+
+  // Adjust the following values based on your needs
+  var telegramBotToken = "your-telegram-bot-token";
+  var telegramChatIds = ["your-telegram-group-id"];
+
+  // Get the edited cell value
+  var editedValue = range.getValue();
+
+  // Get the sheet name and cell address
+  var sheetName = sheet.getName();
+  var cellAddress = range.getA1Notation();
+
+  // Format the message with the updated value and location
+  var message = editedValue;
+
+  // Send the message to Telegram for each chat ID
+  for (var i = 0; i < telegramChatIds.length; i++) {
+    sendTelegramMessage(telegramBotToken, telegramChatIds[i], message);
+  }
+}
+
+function sendTelegramMessage(token, chatId, message) {
+  var baseUrl = "https://api.telegram.org/bot" + token;
+  var apiUrl = "/sendMessage?chat_id=" + chatId + "&text=" + encodeURIComponent(message);
+  var url = baseUrl + apiUrl;
+
+  // Make a GET request to the Telegram API
+  var response = UrlFetchApp.fetch(url);
+}
